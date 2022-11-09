@@ -92,6 +92,7 @@ public class Renderer {
             RenderBlockModel((TexturedModel) model, new Vector3f(0, 0, 0), new Quaternionf(), new Vector3f(1, 1, 1));
     }
 
+    /*
     public static void RenderWireframeBox(Vector3f position, Quaternionf rotation, Vector3f size) {
         glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -158,6 +159,7 @@ public class Renderer {
         GL30.glBindVertexArray(0);
         defaultShader.stop();
     }
+    */
 
     private static void RenderBlockModel(TexturedModel model, Vector3f position, Quaternionf rotation, Vector3f scale) {
         if (model == null)

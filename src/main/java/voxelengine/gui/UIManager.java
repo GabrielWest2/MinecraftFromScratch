@@ -65,18 +65,18 @@ public class UIManager {
         TextureButton button2 = new TextureButton(new ScreenConstraint(button).addConstraint(Side.TOP, "55px"), "Multiplayer", new Vector2i(450, 50), false);
         TextureButton button3 = new TextureButton(new ScreenConstraint(button2).addConstraint(Side.TOP, "100px"), "Options", new Vector2i(197 + 25, 50), false);
         TextureButton button4 = new TextureButton(new ScreenConstraint(button3).addConstraint(Side.LEFT, "228px"), "Quit Game", new Vector2i(197 + 25, 50), new QuitgameCallback());
-        Text version = new Text(new ScreenConstraint(null).addConstraint(Side.LEFT, "5px").addConstraint(Side.BOTTOM, "5px"), "Minecraft 1.0", 20, new Vector4f(1, 1, 1, 1));
-        Text copyright = new Text(new ScreenConstraint(null).addConstraint(Side.RIGHT, "5px").addConstraint(Side.BOTTOM, "5px"), "Copyright 2022 GABE", 20, new Vector4f(1, 1, 1, 1));
+        Text version = new Text(new ScreenConstraint(null).addConstraint(Side.LEFT, "5px").addConstraint(Side.BOTTOM, "5px"), "MCFS 1.0", 20, new Vector4f(1, 1, 1, 1));
+        //Text copyright = new Text(new ScreenConstraint(null).addConstraint(Side.RIGHT, "5px").addConstraint(Side.BOTTOM, "5px"), "Copyright 2022 GABE", 20, new Vector4f(1, 1, 1, 1));
         Image title = new Image(new ScreenConstraint(null).addConstraint(Side.CENTER_X, "0px").addConstraint(Side.CENTER_Y, "-30%"), 4, new Vector2i((int) (570 * 1.2), (int) (100 * 1.2)));
-        Image title2 = new Image(new ScreenConstraint(title).addConstraint(Side.LEFT, "75px").addConstraint(Side.TOP, "100px"), 5, new Vector2i((int) (719 * 0.75f), (int) (75 * 0.75f)));
+        //Image title2 = new Image(new ScreenConstraint(title).addConstraint(Side.LEFT, "75px").addConstraint(Side.TOP, "100px"), 5, new Vector2i((int) (719 * 0.75f), (int) (75 * 0.75f)));
         menu.addElement(button);
         menu.addElement(button2);
         menu.addElement(button3);
         menu.addElement(button4);
         menu.addElement(version);
-        menu.addElement(copyright);
+        //menu.addElement(copyright);
         menu.addElement(title);
-        menu.addElement(title2);
+        //menu.addElement(title2);
         UIManager.addMenu("titlescreen", menu);
         UIManager.setActiveMenu("titlescreen");
     }

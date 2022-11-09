@@ -46,7 +46,7 @@ public class DisplayManager {
         glfwWindowHint(GLFW_MAXIMIZED, FULLSCREEN ? GLFW_TRUE : GLFW_FALSE); // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", 0, 0);
+        window = glfwCreateWindow(WIDTH, HEIGHT, "MCFS 1.0", 0, 0);
         if (window == -1)
             throw new RuntimeException("Failed to create the GLFW window");
 
