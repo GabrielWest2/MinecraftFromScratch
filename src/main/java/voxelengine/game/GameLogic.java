@@ -20,8 +20,6 @@ import voxelgame.material.Material;
 
 public class GameLogic {
     private static final Text fps = new Text(new ScreenConstraint(null).addConstraint(Side.LEFT, "10px").addConstraint(Side.TOP, "10px"), "60 FPS", 25, new Vector4f(1, 1, 1, 0.5f));
-    public static SkyboxModel skyboxModel;
-
     public static void shutdown() {
         System.out.println("Shutting down...");
         Renderer.cleanUp();
@@ -35,7 +33,6 @@ public class GameLogic {
         ModelManager.LoadModels();
         Renderer.Prepare();
         UIManager.init();
-        skyboxModel = ModelCreator.createSkyboxModel(new String[]{"panorama_3", "panorama_1", "panorama_4", "panorama_5", "panorama_2", "panorama_0"});
         //World.init();
     }
 
@@ -50,8 +47,7 @@ public class GameLogic {
             World.setBlock(new Vector3i((int) Camera.getPosition().x, (int) Camera.getPosition().y, (int) Camera.getPosition().z), new Block(Material.LOG));
         }
 
-        Renderer.Render(skyboxModel);
-        UIManager.render();
+
         fps.setText(Time.getFPS() + " FPS");
         fps.Render();
         Renderer.endFrame();

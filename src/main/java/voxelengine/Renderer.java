@@ -6,10 +6,8 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import voxelengine.engine.DisplayManager;
-import voxelengine.model.Model;
-import voxelengine.model.ModelManager;
-import voxelengine.model.SkyboxModel;
-import voxelengine.model.TexturedModel;
+import voxelengine.gui.UIManager;
+import voxelengine.model.*;
 import voxelengine.shader.*;
 import voxelengine.util.MatrixBuilder;
 
@@ -27,6 +25,10 @@ public class Renderer {
     private static FontShader fontShader;
     private static ButtonShader buttonShader;
     private static ImageShader imageShader;
+
+    private static SkyboxModel skyboxModel;
+    private static SkyboxModel panorama;
+    private static SkyboxModel day;
 
     public static void UpdateProjection() {
         Matrix4f mat = MatrixBuilder.createProjectionMatrix();
@@ -77,6 +79,10 @@ public class Renderer {
         buttonShader = new ButtonShader();
         imageShader = new ImageShader();
         UpdateProjection();
+
+        panorama = ModelCreator.createSkyboxModel(new String[]{"panorama_3", "panorama_1", "panorama_4", "panorama_5", "panorama_2", "panorama_0"});
+        day = ModelCreator.createSkyboxModel(new String[]{"right", "left", "top", "bottom", "back", "front"});
+        skyboxModel = panorama;
     }
 
     public static void Render(Model model) {
@@ -209,12 +215,17 @@ public class Renderer {
     }
 
     public static void endFrame() {
-        //glfwSwapBuffers(DisplayManager.getWindow()); // swap the color buffers
+        Render(skyboxModel);
+        UIManager.render();
         glfwPollEvents();
     }
 
     public static void cleanUp() {
         defaultShader.cleanUp();
         skyboxShader.cleanUp();
+    }
+
+    public static void setSkybox(int i) {
+        skyboxModel = i==0 ? panorama : day;
     }
 }

@@ -9,10 +9,6 @@ import voxelengine.engine.DisplayManager;
 
 public class MatrixBuilder {
 
-    public static final float FOV = 80;
-    public static final float NEAR_PLANE = 0.1f;
-    public static final float FAR_PLANE = 1500f;
-
     public static Matrix4f createTransformationMatrix(Vector3f offset, Vector3f rotation, Vector3f scale) {
         Matrix4f worldMatrix = new Matrix4f();
         worldMatrix.identity().translate(offset).
@@ -34,16 +30,16 @@ public class MatrixBuilder {
 
     public static Matrix4f createProjectionMatrix() {
         float aspectRatio = (float) DisplayManager.WIDTH / (float) DisplayManager.HEIGHT;
-        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
+        float y_scale = (float) ((1f / Math.tan(Math.toRadians(DisplayManager.FOV / 2f))));
         float x_scale = y_scale / aspectRatio;
-        float frustum_length = FAR_PLANE - NEAR_PLANE;
+        float frustum_length = DisplayManager.FAR_PLANE - DisplayManager.NEAR_PLANE;
 
         Matrix4f matrix = new Matrix4f();
         matrix.m00(x_scale);
         matrix.m11(y_scale);
-        matrix.m22(-((FAR_PLANE + NEAR_PLANE) / frustum_length));
+        matrix.m22(-((DisplayManager.FAR_PLANE + DisplayManager.NEAR_PLANE) / frustum_length));
         matrix.m23(-1);
-        matrix.m32(-((2 * NEAR_PLANE * FAR_PLANE) / frustum_length));
+        matrix.m32(-((2 * DisplayManager.NEAR_PLANE * DisplayManager.FAR_PLANE) / frustum_length));
         matrix.m33(0);
         return matrix;
     }

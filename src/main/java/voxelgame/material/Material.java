@@ -8,7 +8,7 @@ import voxelgame.block.BlockTexture;
  * @Date 10/12/2022
  */
 public enum Material {
-    AIR(0, "Air", null, true),
+    AIR(0, "Air", new BlockTexture(new Vector2i(31, 31)), true),
     DIRT(1, "Dirt", new BlockTexture(new Vector2i(7, 2)), false),
     STONE(2, "Stone", new BlockTexture(new Vector2i(31, 15)), false),
     PUMPKIN(3, "Pumpkin", new BlockTexture(new Vector2i(26, 28), new Vector2i(26, 25), new Vector2i(26, 26), new Vector2i(26, 26), new Vector2i(26, 26), new Vector2i(26, 26)), true),

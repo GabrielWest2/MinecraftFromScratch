@@ -54,6 +54,7 @@ public class SaveWorld {
                 chunk.setBlock(cp, block);
                 line = reader.readLine();
             }
+            chunk.hasSerialized = true;
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,14 +21,15 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  * @Date 8/9/2022
  */
 public class DisplayManager {
-    public static final int FPS_CAP = 120;
     public static final boolean VSYNC = true;
     public static final boolean FULLSCREEN = false;
-    public static final float FAR_PLANE = 1000f;
+    public static final float FOV = 80;
     public static final float NEAR_PLANE = 0.1f;
-    public static final float FOV = 90f;
+    public static final float FAR_PLANE = 1500f;
+
     public static int WIDTH = 1280;
     public static int HEIGHT = 720;
+
     private static long window = -1;
 
     public static void createWindow() {

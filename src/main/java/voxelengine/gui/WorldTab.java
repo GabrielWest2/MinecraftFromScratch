@@ -4,6 +4,7 @@ import org.joml.Vector2i;
 import org.joml.Vector4f;
 import voxelgame.SaveWorld;
 
+
 /**
  * @author gabed
  * @Date 10/24/2022
@@ -26,7 +27,7 @@ public class WorldTab extends ScrollFrameEntry {
         rect = new Button(new ScreenConstraint(null).addConstraint(Side.CENTER_X, "0px"), " ", new Vector2i(800, 125), new Vector4f(0, 0, 0, 0.6f), () -> UIManager.setSelectedTab(index));
         image = new Image(new ScreenConstraint(rect).addConstraint(Side.TOP, "2px").addConstraint(Side.LEFT, "2px"), 10, new Vector2i(120, 120));
         titleLine = new Text(new ScreenConstraint(image).addConstraint(Side.TOP, "20px").addConstraint(Side.LEFT, "130px"), world.getName(), 23, new Vector4f(1));
-        line2 = new Text(new ScreenConstraint(titleLine).addConstraint(Side.TOP, "30px"), world.getPath() + " (12/22/13 12:47 PM)", 20, new Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
+        line2 = new Text(new ScreenConstraint(titleLine).addConstraint(Side.TOP, "30px"), world.getPath() + " (" + world.getLastPlayed() +")", 20, new Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
         line3 = new Text(new ScreenConstraint(line2).addConstraint(Side.TOP, "30px"), "Survival Mode", 20, new Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
     }
 

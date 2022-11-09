@@ -5,10 +5,12 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import voxelengine.Camera;
 import voxelengine.gui.callback.QuitgameCallback;
+import voxelengine.gui.callback.SaveWorldCallback;
 import voxelengine.gui.callback.SingleplayerCallback;
 import voxelengine.gui.callback.TitlescreenCallback;
 import voxelgame.SaveWorld;
 import voxelgame.World;
+import voxelgame.material.Material;
 
 import java.io.File;
 import java.util.Arrays;
@@ -33,6 +35,8 @@ public class UIManager {
         if (activeMenu == menus.get("titlescreen")) {
             Camera.rotateBy(new Vector3f(0, -0.025f, 0));
             Camera.setRotation(new Vector3f(Camera.getRotation().x, Camera.getRotation().y % 360, Camera.getRotation().z));
+        }else if (activeMenu == menus.get("game")) {
+            updateInGameHUD();
         } else {
             Camera.update();
         }
@@ -48,13 +52,18 @@ public class UIManager {
     public static void init() {
         createTitlescreen();
         createSingleplayerScreen();
+        createInGameHUD();
     }
 
+    public static void updateInGameHUD(){
+
+    }
+    static Image highlight;
     private static void createTitlescreen() {
         UIMenu menu = new UIMenu();
         TextureButton button = new TextureButton(new ScreenConstraint(null).addConstraint(Side.CENTER_X, "0px").addConstraint(Side.CENTER_Y, "25px"), "Singleplayer", new Vector2i(450, 50), new SingleplayerCallback());
-        TextureButton button2 = new TextureButton(new ScreenConstraint(button).addConstraint(Side.TOP, "55px"), "Multiplayer", new Vector2i(450, 50));
-        TextureButton button3 = new TextureButton(new ScreenConstraint(button2).addConstraint(Side.TOP, "100px"), "Options", new Vector2i(197 + 25, 50));
+        TextureButton button2 = new TextureButton(new ScreenConstraint(button).addConstraint(Side.TOP, "55px"), "Multiplayer", new Vector2i(450, 50), false);
+        TextureButton button3 = new TextureButton(new ScreenConstraint(button2).addConstraint(Side.TOP, "100px"), "Options", new Vector2i(197 + 25, 50), false);
         TextureButton button4 = new TextureButton(new ScreenConstraint(button3).addConstraint(Side.LEFT, "228px"), "Quit Game", new Vector2i(197 + 25, 50), new QuitgameCallback());
         Text version = new Text(new ScreenConstraint(null).addConstraint(Side.LEFT, "5px").addConstraint(Side.BOTTOM, "5px"), "Minecraft 1.0", 20, new Vector4f(1, 1, 1, 1));
         Text copyright = new Text(new ScreenConstraint(null).addConstraint(Side.RIGHT, "5px").addConstraint(Side.BOTTOM, "5px"), "Copyright 2022 GABE", 20, new Vector4f(1, 1, 1, 1));
@@ -70,6 +79,46 @@ public class UIManager {
         menu.addElement(title2);
         UIManager.addMenu("titlescreen", menu);
         UIManager.setActiveMenu("titlescreen");
+    }
+
+    private static void createInGameHUD(){
+        UIMenu menu = new UIMenu();
+
+        Image hotbar = new Image(new ScreenConstraint(null).addConstraint(Side.CENTER_X, "0px").addConstraint(Side.BOTTOM, "20px"), 11, new Vector2i(364, 44));
+        menu.addElement(hotbar);
+        highlight = new Image(new ScreenConstraint(hotbar).addConstraint(Side.LEFT, (40*4)+"px"), 12, new Vector2i(44, 44));
+        menu.addElement(highlight);
+        UVImage slot1 = new UVImage(new ScreenConstraint(hotbar).addConstraint(Side.LEFT, "7px").addConstraint(Side.TOP, "7px"), 6, new Vector2i(30, 30), generateUVs(Material.GRASS.getTexture().getFaceTexture(4)));
+        UVImage slot2 = new UVImage(new ScreenConstraint(slot1).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.DIRT.getTexture().getFaceTexture(4)));
+        UVImage slot3 = new UVImage(new ScreenConstraint(slot2).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.STONE.getTexture().getFaceTexture(4)));
+        UVImage slot4 = new UVImage(new ScreenConstraint(slot3).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.GRASS.getTexture().getFaceTexture(4)));
+        UVImage slot5 = new UVImage(new ScreenConstraint(slot4).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.LOG.getTexture().getFaceTexture(4)));
+        UVImage slot6 = new UVImage(new ScreenConstraint(slot5).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.BEDROCK.getTexture().getFaceTexture(4)));
+        UVImage slot7 = new UVImage(new ScreenConstraint(slot6).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.LEAF.getTexture().getFaceTexture(4)));
+        UVImage slot8 = new UVImage(new ScreenConstraint(slot7).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.SAND.getTexture().getFaceTexture(4)));
+        UVImage slot9 = new UVImage(new ScreenConstraint(slot8).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.PUMPKIN.getTexture().getFaceTexture(4)));
+        menu.addElement(slot1);
+        menu.addElement(slot2);
+        menu.addElement(slot3);
+        menu.addElement(slot4);
+        menu.addElement(slot5);
+        menu.addElement(slot6);
+        menu.addElement(slot7);
+        menu.addElement(slot8);
+        menu.addElement(slot9);
+
+        menu.addElement(new TextureButton(new ScreenConstraint(null).addConstraint(Side.RIGHT, "10px").addConstraint(Side.TOP, "10px"), "Leave", new Vector2i(150, 50), new SaveWorldCallback()));
+        UIManager.addMenu("game", menu);
+    }
+
+    private static float[] generateUVs(Vector2i pos) {
+        float scale = 1/32f;
+        return new float[]{
+                pos.x * scale, (pos.y + 1) * scale,
+                pos.x * scale, pos.y * scale,
+                (pos.x + 1) * scale, (pos.y + 1) * scale,
+                (pos.x + 1) * scale, pos.y * scale
+        };
     }
 
     private static ScrollFrame getCurrentScrollFrame() {
@@ -90,8 +139,6 @@ public class UIManager {
 
     private static void createSingleplayerScreen() {
         UIMenu menu = new UIMenu();
-
-
         File path = new File("worlds");
 
         File[] files = Arrays.stream(Objects.requireNonNull(path.listFiles())).filter(File::isDirectory).toArray(File[]::new);
@@ -112,7 +159,7 @@ public class UIManager {
         menu.addElement(new Text(new ScreenConstraint(null).addConstraint(Side.TOP, "40px").addConstraint(Side.CENTER_X, "0px"), "Select World", 30, new Vector4f(1, 1, 1, 1)));
 
         play = new TextureButton(new ScreenConstraint(null).addConstraint(Side.CENTER_X, "0px").addConstraint(Side.BOTTOM, "130px"), "Play Selected World", new Vector2i(450, 50), true, () -> World.setWorld(((WorldTab) frame.getElements()[worldTab]).getWorld()));
-        TextureButton button2 = new TextureButton(new ScreenConstraint(play).addConstraint(Side.TOP, "55px"), "Create New World", new Vector2i(450, 50));
+        TextureButton button2 = new TextureButton(new ScreenConstraint(play).addConstraint(Side.TOP, "55px"), "Create New World", new Vector2i(450, 50), false);
         TextureButton button3 = new TextureButton(new ScreenConstraint(button2).addConstraint(Side.TOP, "55px"), "Back", new Vector2i(197 + 25, 50), () -> {
             play.setDisabled(true);
             new TitlescreenCallback().call();

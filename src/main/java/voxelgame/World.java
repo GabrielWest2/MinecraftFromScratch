@@ -12,7 +12,14 @@ import voxelgame.block.Block;
 import voxelgame.chunk.Chunk;
 import voxelgame.chunk.ChunkPoint;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * @author gabed
@@ -38,8 +45,8 @@ public class World {
         World.world = world;
         chunks = new HashMap<>();
         updateChunks();
-        UIManager.setActiveMenu((UIMenu) null);
-        GameLogic.skyboxModel = ModelCreator.createSkyboxModel(new String[]{"right", "left", "top", "bottom", "back", "front"});
+        UIManager.setActiveMenu("game");
+        Renderer.setSkybox(1);
     }
 
     public static void update() {
@@ -52,23 +59,6 @@ public class World {
         } else {
             Camera.update();
         }
-
-        int i = 0;
-        for (int x = lastChunk.x - RENDER_DISTANCE - 1; x <= lastChunk.x + RENDER_DISTANCE; x++) {
-            for (int y = lastChunk.y - RENDER_DISTANCE - 1; y <= lastChunk.y + RENDER_DISTANCE; y++) {
-
-                if (!(x > lastChunk.x - RENDER_DISTANCE && x < lastChunk.x + RENDER_DISTANCE)) {
-                    if (!(y > lastChunk.y - RENDER_DISTANCE && y < lastChunk.y + RENDER_DISTANCE)) {
-                        i++;
-                        if (chunks.get(new Vector2i(x, y)) != null) {
-                            chunks.get(new Vector2i(x, y)).serializeChunk();
-
-                        }
-                    }
-                }
-            }
-        }
-        System.out.println(i);
         for (int x = lastChunk.x - RENDER_DISTANCE; x < lastChunk.x + RENDER_DISTANCE; x++) {
             for (int y = lastChunk.y - RENDER_DISTANCE; y < lastChunk.y + RENDER_DISTANCE; y++) {
                 Renderer.Render(chunks.get(new Vector2i(x, y)).getChunkModel());
@@ -130,5 +120,25 @@ public class World {
 
     public static HashMap<Vector2i, Chunk> getChunks() {
         return chunks;
+    }
+
+    public static void saveAndExit() {
+        try {
+            Locale loc = new Locale.Builder().setLanguage("en").setRegion("US").build();
+            PrintWriter writer = new PrintWriter(World.getWorld().getPath() + "/world.wfdesc", StandardCharsets.UTF_8);
+            writer.println(world.getName());
+            writer.println(world.getVersion());
+            writer.println(world.getDifficulty());
+            writer.println(world.getSeed());
+            String pattern = "dd/M/yy hh:mm a";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+            writer.println(simpleDateFormat.format(new Date()));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        chunks.values().forEach(Chunk::serializeChunk);
+        chunks.clear();
+        world = null;
     }
 }

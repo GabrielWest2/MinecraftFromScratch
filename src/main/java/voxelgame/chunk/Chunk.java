@@ -40,7 +40,7 @@ public class Chunk {
     private float[] uvArray;
     private int[] indicesArray;
     private float[] normals;
-    private boolean hasSerialized = false;
+    public boolean hasSerialized = false;
 
     public Chunk(int chunkX, int chunkY) {
         this.chunkX = chunkX;

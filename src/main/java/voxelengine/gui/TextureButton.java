@@ -21,13 +21,6 @@ public class TextureButton implements UIElement {
     private boolean disabled = false;
     private Callback callback;
 
-    public TextureButton(ScreenConstraint constraints, String text, Vector2i size) {
-        this.constraints = constraints;
-        this.text = text;
-        this.size = size;
-        uiText = new Text(new ScreenConstraint(this).addConstraint(Side.LEFT, (size.x / 2) - (Text.getStringSize(text, 20) / 2) + "px").addConstraint(Side.TOP, ((size.y / 2) - (20 / 2)) + "px"), text, 20, new Vector4f(1, 1, 1, 1));
-    }
-
     public TextureButton(ScreenConstraint constraints, String text, Vector2i size, boolean disabled) {
         this.constraints = constraints;
         this.text = text;
@@ -50,6 +43,7 @@ public class TextureButton implements UIElement {
         this.text = text;
         this.size = size;
         this.callback = callback;
+        this.disabled = false;
         uiText = new Text(new ScreenConstraint(this).addConstraint(Side.LEFT, (size.x / 2) - (Text.getStringSize(text, 20) / 2) + "px").addConstraint(Side.TOP, ((size.y / 2) - (20 / 2)) + "px"), text, 20, new Vector4f(1, 1, 1, 1));
 
     }
