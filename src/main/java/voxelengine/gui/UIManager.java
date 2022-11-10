@@ -37,7 +37,6 @@ public class UIManager {
             Camera.setRotation(new Vector3f(Camera.getRotation().x, Camera.getRotation().y % 360, Camera.getRotation().z));
         }else if (activeMenu == menus.get("game")) {
             updateInGameHUD();
-        } else {
             Camera.update();
         }
         if (activeMenu == null)

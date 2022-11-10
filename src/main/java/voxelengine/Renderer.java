@@ -1,13 +1,19 @@
 package voxelengine;
 
-import org.joml.*;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import voxelengine.engine.DisplayManager;
 import voxelengine.gui.UIManager;
-import voxelengine.model.*;
+import voxelengine.model.Model;
+import voxelengine.model.ModelCreator;
+import voxelengine.model.SkyboxModel;
+import voxelengine.model.TexturedModel;
 import voxelengine.shader.*;
 import voxelengine.util.MatrixBuilder;
 
@@ -25,6 +31,7 @@ public class Renderer {
     private static FontShader fontShader;
     private static ButtonShader buttonShader;
     private static ImageShader imageShader;
+    //private static CrosshairShader crosshairShader;
 
     private static SkyboxModel skyboxModel;
     private static SkyboxModel panorama;
@@ -32,6 +39,9 @@ public class Renderer {
 
     public static void UpdateProjection() {
         Matrix4f mat = MatrixBuilder.createProjectionMatrix();
+        //crosshairShader.start();
+        //crosshairShader.loadViewportSize(new Vector2i(DisplayManager.WIDTH, DisplayManager.HEIGHT));
+        //crosshairShader.stop();
         imageShader.start();
         imageShader.loadViewportSize(new Vector2i(DisplayManager.WIDTH, DisplayManager.HEIGHT));
         imageShader.stop();
@@ -78,6 +88,7 @@ public class Renderer {
         fontShader = new FontShader();
         buttonShader = new ButtonShader();
         imageShader = new ImageShader();
+        //crosshairShader = new CrosshairShader();
         UpdateProjection();
 
         panorama = ModelCreator.createSkyboxModel(new String[]{"panorama_3", "panorama_1", "panorama_4", "panorama_5", "panorama_2", "panorama_0"});
@@ -228,6 +239,10 @@ public class Renderer {
     }
 
     public static void setSkybox(int i) {
-        skyboxModel = i==0 ? panorama : day;
+        skyboxModel = i == 0 ? panorama : day;
     }
+
+    //public static CrosshairShader getCrosshairShader() {
+    //    return crosshairShader;
+    //}
 }

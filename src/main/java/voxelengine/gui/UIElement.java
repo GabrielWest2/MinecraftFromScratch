@@ -156,6 +156,42 @@ public interface UIElement {
         return quad;
     }
 
+    default int createImageQuad(Vector2i pos, Vector2i size) {
+
+        final float[] POSITIONS = {pos.x, pos.y + size.y, pos.x, pos.y, pos.x + size.x, pos.y + size.y, pos.x + size.x, pos.y};
+
+
+        float[] UVS = {
+                0, 1,
+                0, 0,
+                1, 1,
+                1, 0
+        };
+        int quad = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(quad);
+
+        int vboID = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(POSITIONS.length);
+        buffer.put(POSITIONS);
+        buffer.flip();
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL20.glVertexAttribPointer(0, 2, GL_FLOAT, false, 0, 0);
+
+        vboID = GL15.glGenBuffers();
+        glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+        buffer = BufferUtils.createFloatBuffer(UVS.length);
+        buffer.put(UVS);
+        buffer.flip();
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
+        glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
+        return quad;
+    }
+
     default void DrawRect() {
 
         GL30.glBindVertexArray(getVAO());
