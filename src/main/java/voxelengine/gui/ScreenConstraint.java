@@ -25,6 +25,10 @@ public class ScreenConstraint {
         return this;
     }
 
+    public String getConstraint(Side side){
+        return constraints.get(side);
+    }
+
     public Vector2i calculatePixelPosition(Vector2i size) {
         int pixelX = 0;
         int pixelY = 0;

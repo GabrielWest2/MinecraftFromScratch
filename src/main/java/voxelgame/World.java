@@ -59,6 +59,11 @@ public class World {
         } else {
             Camera.update();
         }
+    }
+
+    public static void render() {
+        if(world==null)
+            return;
         for (int x = lastChunk.x - RENDER_DISTANCE; x < lastChunk.x + RENDER_DISTANCE; x++) {
             for (int y = lastChunk.y - RENDER_DISTANCE; y < lastChunk.y + RENDER_DISTANCE; y++) {
                 Renderer.Render(chunks.get(new Vector2i(x, y)).getChunkModel());

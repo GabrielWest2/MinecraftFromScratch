@@ -31,7 +31,7 @@ public class Renderer {
     private static FontShader fontShader;
     private static ButtonShader buttonShader;
     private static ImageShader imageShader;
-    //private static CrosshairShader crosshairShader;
+    private static CrosshairShader crosshairShader;
 
     private static SkyboxModel skyboxModel;
     private static SkyboxModel panorama;
@@ -39,9 +39,9 @@ public class Renderer {
 
     public static void UpdateProjection() {
         Matrix4f mat = MatrixBuilder.createProjectionMatrix();
-        //crosshairShader.start();
-        //crosshairShader.loadViewportSize(new Vector2i(DisplayManager.WIDTH, DisplayManager.HEIGHT));
-        //crosshairShader.stop();
+        crosshairShader.start();
+        crosshairShader.loadViewportSize(new Vector2i(DisplayManager.WIDTH, DisplayManager.HEIGHT));
+        crosshairShader.stop();
         imageShader.start();
         imageShader.loadViewportSize(new Vector2i(DisplayManager.WIDTH, DisplayManager.HEIGHT));
         imageShader.stop();
@@ -88,7 +88,7 @@ public class Renderer {
         fontShader = new FontShader();
         buttonShader = new ButtonShader();
         imageShader = new ImageShader();
-        //crosshairShader = new CrosshairShader();
+        crosshairShader = new CrosshairShader();
         UpdateProjection();
 
         panorama = ModelCreator.createSkyboxModel(new String[]{"panorama_3", "panorama_1", "panorama_4", "panorama_5", "panorama_2", "panorama_0"});
@@ -230,6 +230,7 @@ public class Renderer {
     public static void endFrame() {
         Render(skyboxModel);
         UIManager.render();
+        UIManager.renderDynamicElements();
         glfwPollEvents();
     }
 
@@ -242,7 +243,8 @@ public class Renderer {
         skyboxModel = i == 0 ? panorama : day;
     }
 
-    //public static CrosshairShader getCrosshairShader() {
-    //    return crosshairShader;
-    //}
+    public static CrosshairShader getCrosshairShader() {
+        return crosshairShader;
+    }
+
 }

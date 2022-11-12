@@ -4,10 +4,12 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import voxelengine.Camera;
+import voxelengine.game.GameLogic;
 import voxelengine.gui.callback.QuitgameCallback;
 import voxelengine.gui.callback.SaveWorldCallback;
 import voxelengine.gui.callback.SingleplayerCallback;
 import voxelengine.gui.callback.TitlescreenCallback;
+import voxelengine.util.Time;
 import voxelgame.SaveWorld;
 import voxelgame.World;
 import voxelgame.material.Material;
@@ -26,15 +28,16 @@ public class UIManager {
     private static UIMenu activeMenu;
     private static int worldTab = 0;
     private static TextureButton play;
-
+    private static final Text fps = new Text(new ScreenConstraint(null).addConstraint(Side.LEFT, "10px").addConstraint(Side.TOP, "10px"), "60 FPS", 25, new Vector4f(1, 1, 1, 0.5f));
+    private static int slot = 0;
     public static void addMenu(String name, UIMenu menu) {
         menus.put(name, menu);
     }
 
     public static void render() {
         if (activeMenu == menus.get("titlescreen")) {
-            Camera.rotateBy(new Vector3f(0, -0.025f, 0));
-            Camera.setRotation(new Vector3f(Camera.getRotation().x, Camera.getRotation().y % 360, Camera.getRotation().z));
+            Camera.setRotation(new Vector3f(0, (Camera.getRotation().y - 0.025f) % 360, 0));
+
         }else if (activeMenu == menus.get("game")) {
             updateInGameHUD();
             Camera.update();
@@ -54,8 +57,55 @@ public class UIManager {
         createInGameHUD();
     }
 
-    public static void updateInGameHUD(){
+    public static void incrementHotbar(){
+        System.out.println("increase");
+        slot++;
+        if(slot > 8)
+            slot -= 9;
+    }
+    public static void decrementHotbar(){
+        slot--;
+        if(slot < 0)
+            slot += 9;
+    }
+    public static void setHotbar(int i){
+        slot = i;
+    }
 
+    public static void updateInGameHUD(){
+        if(!highlight.getConstraints().getConstraint(Side.LEFT).equals((40* slot)+"px")) {
+            highlight.getConstraints().addConstraint(Side.LEFT, (40 * slot) + "px");
+            highlight.resetVAO();
+            switch (slot){
+                case 0:
+                    GameLogic.selectedMaterial = Material.AIR;
+                    break;
+                case 1:
+                    GameLogic.selectedMaterial = Material.DIRT;
+                    break;
+                case 2:
+                    GameLogic.selectedMaterial = Material.STONE;
+                    break;
+                case 3:
+                    GameLogic.selectedMaterial = Material.GRASS;
+                    break;
+                case 4:
+                    GameLogic.selectedMaterial = Material.LOG;
+                    break;
+                case 5:
+                    GameLogic.selectedMaterial = Material.BEDROCK;
+                    break;
+                case 6:
+                    GameLogic.selectedMaterial = Material.LEAF;
+                    break;
+                case 7:
+                    GameLogic.selectedMaterial = Material.SAND;
+                    break;
+                case 8:
+                    GameLogic.selectedMaterial = Material.PUMPKIN;
+                    break;
+            }
+        }
     }
     static Image highlight;
     private static void createTitlescreen() {
@@ -96,6 +146,8 @@ public class UIManager {
         UVImage slot7 = new UVImage(new ScreenConstraint(slot6).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.LEAF.getTexture().getFaceTexture(4)));
         UVImage slot8 = new UVImage(new ScreenConstraint(slot7).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.SAND.getTexture().getFaceTexture(4)));
         UVImage slot9 = new UVImage(new ScreenConstraint(slot8).addConstraint(Side.LEFT, "40px"),0, new Vector2i(30, 30), generateUVs(Material.PUMPKIN.getTexture().getFaceTexture(4)));
+        Crosshair crosshair = new Crosshair(13, new Vector2i(20, 20));
+        menu.addElement(crosshair);
         menu.addElement(slot1);
         menu.addElement(slot2);
         menu.addElement(slot3);
@@ -186,5 +238,10 @@ public class UIManager {
 
     public static void setActiveMenu(String name) {
         activeMenu = menus.get(name);
+    }
+
+    public static void renderDynamicElements() {
+        fps.setText(Time.getFPS() + " FPS");
+        fps.Render();
     }
 }

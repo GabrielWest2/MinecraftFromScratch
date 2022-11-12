@@ -90,6 +90,8 @@ public class Chunk {
     }
 
     public void setBlock(Vector3i position, Block block) {
+        if(position.x < 0 || position.x > 15 || position.z < 0 || position.z > 15 || position.y < 0 || position.y > 127)
+            return;
         if (blocks[position.x][position.y][position.z].getMaterial() == block.getMaterial())
             return;
         blocks[position.x][position.y][position.z] = block;
@@ -121,6 +123,8 @@ public class Chunk {
     private void addBlock(Vector3i position, Material material) {
         boolean top = true, bottom = true, left = true, right = true, front = true, back = true;
         //Cull left and right faces
+        if(position.x < 0 || position.x > 15 || position.z < 0 || position.z > 15 || position.y < 0 || position.y > 127)
+            return;
         if (position.x == 0 || position.x == 15) {
             if (position.x == 0) {
                 right = blocks[position.x + 1][position.y][position.z].getMaterial().isTransparent();
@@ -160,7 +164,7 @@ public class Chunk {
             front = blocks[position.x][position.y][position.z].getMaterial().isTransparent() || blocks[position.x][position.y][position.z + 1].getMaterial().isTransparent();
         }
         //Cull top and bottom faces
-        if (position.y == 0 || position.y == 255) {
+        if (position.y == 0 || position.y == 127) {
             if (position.y == 0) {
                 top = blocks[position.x][position.y + 1][position.z].getMaterial().isTransparent();
             } else {

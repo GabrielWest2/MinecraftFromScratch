@@ -3,6 +3,7 @@ package voxelengine.input;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import voxelengine.gui.ScrollFrame;
+import voxelengine.gui.UIManager;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -68,6 +69,10 @@ public class Mouse {
         dsx = (float) scrollX;
         dsy = (float) scrollY;
         ScrollFrame.updateScroll(dsy / -55f);
+        if(scrollY < 0)
+            UIManager.incrementHotbar();
+        if(scrollY > 0)
+            UIManager.decrementHotbar();
     }
 
     public static void MouseMoveCallback(long window, double mouseX, double mouseY) {
